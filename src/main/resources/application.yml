@@ -12,13 +12,5 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
     open-in-view: false
-
-    jackson:
-      default-property-inclusion: non_null
-
-    jwt:
-      secret: vmfhaltmsasdvdfhaertgaerfgsdfasdklfvhnsdjikonkl
-
-steam:
-  api-key: E747BF736400A81DFDF11557E236014E
-  access-key: eyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVFRV8yNDc2QzU5NF9ENTM2RiIsICJzdWIiOiAiNzY1NjExOTgxMTE5NTgwODAiLCAiYXVkIjogWyAid2ViOnN0b3JlIiBdLCAiZXhwIjogMTcxNjUxOTY1MiwgIm5iZiI6IDE3MDc3OTE3NzcsICJpYXQiOiAxNzE2NDMxNzc3LCAianRpIjogIjBFRThfMjQ3NkM1OTBfQzNFMjgiLCAib2F0IjogMTcxNjQzMTc3NiwgInJ0X2V4cCI6IDE3MzQ3MDgzOTQsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICIyMTEuMjI3LjYwLjI5IiwgImlwX2NvbmZpcm1lciI6ICIyMTEuMjI3LjYwLjI5IiB9.xyydpZJK9amN8cfhNgPsdKnCk-5bfVMDamWsIzfC2sfiBrPPbPRx_rJ10Z2c05uCNJXjrKKYC0VU4VEEn1lWAg
+  jwt:
+    secret: vmfhaltmsasdvdfhaertgaerfgsdfasdklfvhnsdjikonkl
