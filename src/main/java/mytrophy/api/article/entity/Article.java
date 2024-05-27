@@ -32,12 +32,13 @@ public class Article extends BaseEntity {
 
 
     @Builder // 빌더 패턴 적용
-    public Article(Long id, Header header, String name, String content, int cntUp) {
+    public Article(Long id, Header header, String name, String content, int cntUp, String imagePath) {
         this.id = id;
         this.header = header;
         this.name = name;
         this.content = content;
         this.cntUp = cntUp;
+        this.imagePath = imagePath;
     }
 
     // 게시글 생성 로직
@@ -47,14 +48,16 @@ public class Article extends BaseEntity {
             .name(articleRequest.getName())
             .content(articleRequest.getContent())
             .cntUp(0)
+            .imagePath(articleRequest.getImagePath())
             .build();
     }
 
     // 게시글 수정
-    public void update(Header header, String name, String content) {
+    public void updateArticle(Header header, String name, String content, String imagePath) {
         this.header = header;
         this.name = name;
         this.content = content;
+        this.imagePath = imagePath;
     }
 
     // 좋아요 증가
