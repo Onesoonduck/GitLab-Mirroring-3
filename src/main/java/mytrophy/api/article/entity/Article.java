@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import mytrophy.api.article.dto.ArticleRequest;
 import mytrophy.api.article.enumentity.Header;
+import mytrophy.api.comment.entity.Comment;
 import mytrophy.api.common.base.BaseEntity;
+import mytrophy.api.member.entity.Member;
+
+import java.util.List;
 
 
 @Entity
@@ -31,14 +35,23 @@ public class Article extends BaseEntity {
     private String imagePath; // 이미지 경로
 
 
+    //TODO : member 연관관계 관련 로직 추가해야 함
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 설정
+    @JoinColumn(name = "member_id")
+    private Member member; // 회원
+
+    //TODO : comment 연관관계 관련 로직 추가해야 함
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private List<Comment> comments; // 댓글
+
     @Builder // 빌더 패턴 적용
-    public Article(Long id, Header header, String name, String content, int cntUp, String imagePath) {
-        this.id = id;
+    public Article(Header header, String name, String content, int cntUp, String imagePath) {
         this.header = header;
         this.name = name;
         this.content = content;
         this.cntUp = cntUp;
         this.imagePath = imagePath;
+//        this.member = member;
     }
 
     // 게시글 생성 로직
@@ -49,6 +62,7 @@ public class Article extends BaseEntity {
             .content(articleRequest.getContent())
             .cntUp(0)
             .imagePath(articleRequest.getImagePath())
+//            .member(articleRequest.getMember())
             .build();
     }
 
