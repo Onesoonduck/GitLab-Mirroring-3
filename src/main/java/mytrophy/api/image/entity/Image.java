@@ -12,8 +12,8 @@ public class Image {
     private String imagePath;
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
     private Article article;
-
 
 }
