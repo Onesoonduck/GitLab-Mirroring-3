@@ -7,6 +7,7 @@ import mytrophy.api.article.dto.ArticleRequest;
 import mytrophy.api.article.entity.Article;
 import mytrophy.api.article.enumentity.Header;
 import mytrophy.api.article.repository.ArticleRepository;
+import mytrophy.api.member.entity.Member;
 import mytrophy.global.handler.resourcenotfound.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    // TODO : member 관련 로직 추가해야 함
     // 게시글 생성
     @Transactional // 트랜잭션 처리
     public Article createArticle(ArticleRequest articleRequest, List<MultipartFile> urls) throws IOException {
@@ -31,6 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .header(articleRequest.getHeader())
                 .name(articleRequest.getName())
                 .content(articleRequest.getContent())
+//                .member(member)
                 .build();
         }
 
@@ -40,6 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
             .name(articleRequest.getName())
             .content(articleRequest.getContent())
             .imagePath(articleRequest.getImagePath()) // 이미지 경로 설정
+//            .member(member)
             .build();
 
         return articleRepository.save(article);
