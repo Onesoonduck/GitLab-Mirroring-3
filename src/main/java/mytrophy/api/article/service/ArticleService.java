@@ -38,7 +38,7 @@ public interface ArticleService {
     Article findByIdAndHeader(Long id, Header header);
 
     // 게시글 수정
-    Article updateArticle(Long id, Header header, String name, String content);
+    Article updateArticle(Long id, ArticleRequest articleRequest);
 
     // 게시글 삭제
     void deleteArticle(Long id);
@@ -48,4 +48,5 @@ public interface ArticleService {
 
     // 좋아요 감소
     void CntUpDown(Long id);
+
 }
