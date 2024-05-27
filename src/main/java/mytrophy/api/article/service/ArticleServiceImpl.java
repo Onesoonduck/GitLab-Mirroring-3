@@ -1,7 +1,5 @@
 package mytrophy.api.article.service;
 
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +7,7 @@ import mytrophy.api.article.dto.ArticleRequest;
 import mytrophy.api.article.entity.Article;
 import mytrophy.api.article.enumentity.Header;
 import mytrophy.api.article.repository.ArticleRepository;
+import mytrophy.global.handler.resourcenotfound.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,12 +23,23 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 게시글 생성
     @Transactional // 트랜잭션 처리
-    public Article createArticle(ArticleRequest articleRequest, List<MultipartFile> files) throws IOException {
+    public Article createArticle(ArticleRequest articleRequest, List<MultipartFile> urls) throws IOException {
 
+        // 이미지 경로 설정
+        if (urls == null) {
+            Article article = Article.builder()
+                .header(articleRequest.getHeader())
+                .name(articleRequest.getName())
+                .content(articleRequest.getContent())
+                .build();
+        }
+
+        // Article 생성
         Article article = Article.builder()
             .header(articleRequest.getHeader())
             .name(articleRequest.getName())
             .content(articleRequest.getContent())
+            .imagePath(articleRequest.getImagePath()) // 이미지 경로 설정
             .build();
 
         return articleRepository.save(article);
@@ -42,8 +52,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 해당 게시글 조회
     public Article findById(Long id) {
-        return articleRepository.findById(id)
+        Article article = articleRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        return article;
     }
 
     // 말머리 별 게시글 리스트 조회
@@ -58,16 +69,29 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 게시글 수정
     @Transactional
-    public Article updateArticle(Long id, Header header, String name, String content) {
+    public Article updateArticle(Long id, ArticleRequest articleRequest) {
         Article article = findById(id);
-        article.update(header, name, content);
-        return article;
+
+        if (article == null) {
+            throw new ResourceNotFoundException("해당 게시글이 존재하지 않습니다.");
+        }
+
+        // 게시글 정보 업데이트
+        article.updateArticle(articleRequest.getHeader(), articleRequest.getName(), articleRequest.getContent(), articleRequest.getImagePath());
+
+        return articleRepository.save(article);
     }
 
     // 게시글 삭제
     @Transactional
     public void deleteArticle(Long id) {
         Article article = findById(id);
+        if (article != null) {
+            articleRepository.delete(article);
+        } else {
+            throw new ResourceNotFoundException("해당 게시글이 존재하지 않습니다.");
+        }
+
         articleRepository.delete(article);
     }
 
