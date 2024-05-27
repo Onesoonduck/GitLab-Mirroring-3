@@ -41,17 +41,17 @@ public class Article extends BaseEntity {
     private Member member; // 회원
 
     //TODO : comment 연관관계 관련 로직 추가해야 함
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private List<Comment> comments; // 댓글
+//    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+//    private List<Comment> comments; // 댓글
 
     @Builder // 빌더 패턴 적용
-    public Article(Header header, String name, String content, int cntUp, String imagePath) {
+    public Article(Header header, String name, String content, int cntUp, String imagePath, Member member) {
         this.header = header;
         this.name = name;
         this.content = content;
         this.cntUp = cntUp;
         this.imagePath = imagePath;
-//        this.member = member;
+        this.member = member;
     }
 
     // 게시글 생성 로직
@@ -62,7 +62,7 @@ public class Article extends BaseEntity {
             .content(articleRequest.getContent())
             .cntUp(0)
             .imagePath(articleRequest.getImagePath())
-//            .member(articleRequest.getMember())
+            .member(articleRequest.getMember())
             .build();
     }
 
