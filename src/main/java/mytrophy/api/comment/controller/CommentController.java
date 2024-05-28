@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import mytrophy.api.comment.dto.CommentDto;
 import mytrophy.api.comment.dto.CreateCommentDto;
 import mytrophy.api.comment.service.CommentService;
+import mytrophy.api.member.repository.MemberRepository;
+import mytrophy.global.jwt.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +19,17 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final MemberRepository memberRepository;
 
     //댓글 등록
     @PostMapping("/articles/{id}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable("id") Long articleId,
-                                                    @RequestParam("memberId") Long memberId,
-                                                    @RequestBody CreateCommentDto createCommentDto) {
+                                                    @RequestBody CreateCommentDto createCommentDto,
+                                                    @AuthenticationPrincipal CustomUserDetails userinfo) {
+        //토큰에서 username 빼내기
+        String username = userinfo.getUsername();
+        Long memberId = memberRepository.findByUsername(username).getId();
+
         CommentDto createdComment = commentService.createComment(memberId, articleId, createCommentDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
@@ -29,8 +37,12 @@ public class CommentController {
     //댓글 수정
     @PatchMapping("/comments/{commentId}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable("commentId") Long commentId,
-                                                    @RequestParam("memberId") Long memberId,
-                                                    @RequestBody String content) {
+                                                    @RequestBody String content,
+                                                    @AuthenticationPrincipal CustomUserDetails userinfo) {
+
+        String username = userinfo.getUsername();
+        Long memberId = memberRepository.findByUsername(username).getId();
+
         if (!commentService.isAuthorized(commentId, memberId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden 에러 반환
         }
@@ -41,7 +53,12 @@ public class CommentController {
 
     //댓글 삭제
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") Long commentId, @RequestParam("memberId") Long memberId){
+    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") Long commentId,
+                                              @AuthenticationPrincipal CustomUserDetails userinfo){
+
+        String username = userinfo.getUsername();
+        Long memberId = memberRepository.findByUsername(username).getId();
+
         if (!commentService.isAuthorized(commentId, memberId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden 에러 반환
         }
@@ -59,7 +76,11 @@ public class CommentController {
 
     //회원별 댓글 조회
     @GetMapping("/members/{id}/comments")
-    public ResponseEntity<List<CommentDto>> getCommentsByMemberId(@PathVariable("id") Long memberId) {
+    public ResponseEntity<List<CommentDto>> getCommentsByMemberId(@AuthenticationPrincipal CustomUserDetails userinfo) {
+
+        String username = userinfo.getUsername();
+        Long memberId = memberRepository.findByUsername(username).getId();
+
         List<CommentDto> comments = commentService.findByMemberId(memberId);
         return ResponseEntity.ok(comments);
     }
@@ -73,7 +94,12 @@ public class CommentController {
 
     //댓글 추천
     @PostMapping("/comments/{id}/like")
-    public ResponseEntity<String> likeComment(@PathVariable("id") Long commentId, @RequestParam("memberId") Long memberId) {
+    public ResponseEntity<String> likeComment(@PathVariable("id") Long commentId,
+                                              @AuthenticationPrincipal CustomUserDetails userinfo) {
+
+        String username = userinfo.getUsername();
+        Long memberId = memberRepository.findByUsername(username).getId();
+
         try {
             commentService.likeComment(commentId, memberId);
             return ResponseEntity.ok("댓글을 추천했습니다.");
@@ -90,7 +116,12 @@ public class CommentController {
 
     //댓글 추천 취소
     @PostMapping("comments/{id}/unlike")
-    public ResponseEntity<String> unlikeComment(@PathVariable("id") Long commentId, @RequestParam("memberId") Long memberId) {
+    public ResponseEntity<String> unlikeComment(@PathVariable("id") Long commentId,
+                                                @AuthenticationPrincipal CustomUserDetails userinfo) {
+
+        String username = userinfo.getUsername();
+        Long memberId = memberRepository.findByUsername(username).getId();
+
         try {
             commentService.unlikeComment(commentId, memberId);
             return ResponseEntity.ok("댓글 추천이 취소되었습니다.");
