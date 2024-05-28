@@ -36,9 +36,9 @@ public class Article extends BaseEntity {
 
 
     //TODO : member 연관관계 관련 로직 추가해야 함
-//    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 설정
-//    @JoinColumn(name = "member_id")
-//    private Member member; // 회원
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 설정
+    @JoinColumn(name = "member_id")
+    private Member member; // 회원
 
     //TODO : comment 연관관계 관련 로직 추가해야 함
 //    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
