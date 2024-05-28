@@ -31,8 +31,8 @@ public class ArticleController {
                                                  @RequestPart (value = "file", required = false) List<MultipartFile> files) throws IOException {
 
         // 로그인한 사용자 정보 가져오기
-        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member members = articleRequest.getMember();
+//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Member members = articleRequest.getMember();
 
         // 이미지 업로드 및 경로 설정
         List<String> url = null;
