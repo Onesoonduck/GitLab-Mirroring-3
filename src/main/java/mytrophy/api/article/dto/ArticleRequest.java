@@ -14,7 +14,7 @@ public class ArticleRequest {
     private String name;
     private String content;
     private String imagePath;
-    private Member member;
+//    private Member member;
 
     @Builder
     public ArticleRequest(Header header, String name, String content) {
