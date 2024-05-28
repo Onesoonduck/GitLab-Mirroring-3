@@ -10,6 +10,7 @@ import mytrophy.api.member.entity.Member;
 import mytrophy.global.jwt.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +30,6 @@ public class ArticleController {
     @PostMapping("/articles")
     public ResponseEntity<Article> createArticle(@ModelAttribute ArticleRequest articleRequest,
                                                  @RequestPart (value = "file", required = false) List<MultipartFile> files) throws IOException {
-
-        // 로그인한 사용자 정보 가져오기
-//        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Member members = articleRequest.getMember();
 
         // 이미지 업로드 및 경로 설정
         List<String> url = null;
