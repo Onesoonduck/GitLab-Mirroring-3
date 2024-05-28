@@ -7,7 +7,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import mytrophy.api.article.entity.Article;
 import mytrophy.api.common.base.BaseEntity;
+import mytrophy.api.member.entity.Member;
 
 @Entity
 @Getter
@@ -21,21 +23,13 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-//    @ManyToOne
-//    @JoinColumn(name = "article_id")
-//    private Article article;
-
-    //테스트용 회원 아이디
-    @Column(name = "member_id", nullable = false)
-    private Long memberId;
-
-    //테스트용 게시글 아이디
-    @Column(name = "article_id", nullable = false)
-    private Long articleId;
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private Article article;
 
     //추천수
     @Column(name = "cnt_up", nullable = false)
@@ -53,13 +47,13 @@ public class Comment extends BaseEntity {
 
     //setter는 불변성 보장 x -> 사용 자제해야함. 대신에 Builder 패턴 사용
     @Builder
-    public Comment(Long id, String content, Long memberId, Long articleId, int cntUp) {
+    public Comment(String content, Member member, Article article, int cntUp) {
         Assert.notNull(content, "내용 필수 작성");    //null 이면 IllegalArgumentException
 
         // jpa 쓰니까 id는 세팅할 필요없음
         this.content = content;
-        this.memberId = memberId;
-        this.articleId = articleId;
+        this.member = member;
+        this.article = article;
         this.cntUp = cntUp;
     }
 
