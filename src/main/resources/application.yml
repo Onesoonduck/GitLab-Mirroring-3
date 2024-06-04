@@ -1,12 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/mytrophy_db
-    username: root
-    password: 1234
-#    url: jdbc:mysql://34.64.52.132:3306/mytrophy_db
-#    username: mytrophy
-#    password: mytrophy
+#    url: jdbc:mysql://127.0.0.1:3306/mytrophy_db
+#    username: root
+#    password: 1234
+    url: jdbc:mysql://34.64.52.132:3306/mytrophy_db
+    username: mytrophy
+    password: mytrophy
   jpa:
     hibernate:
       ddl-auto: update
