@@ -53,6 +53,10 @@ public class ArticleController {
             imagePath = new ArrayList<>();
         }
 
+        if (articleRequestDto.getAppId() == null) {
+            articleRequestDto.setAppId(null);
+        }
+
         // Article 생성
         ArticleResponseDto articleResponseDto = articleService.createArticle(member.getId(), articleRequestDto, imagePath);
 
