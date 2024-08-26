@@ -103,10 +103,13 @@
 
 
 ✔ 김동근
-- Java 및 Springboot를 활용한 Backend REST API 서버 구현
+- Java 및 Springboot를 활용한 Backend REST API CRUD 구현
 - firebase 외부 저장소를 사용하여 데이터베이스에 쓸모없는 공간 낭비 하지 않는 설계
 - QueryDSL 를 통해 동시에 API 호출이 3~4회 날아가야 하는 과정이 1번으로 압축되고 조회시간이 5초 > 2초로 향상
 - Swagger 문서화를 통해 프론트파트 인원 API 이해, 적용하는 시간 30min > 5min 으로 단축
+
+- React, Typescript, NextJs 활용한 커뮤니티 페이지 제작
+- Axios 를 통해 API 호출 및 데이터 처리
 
 # 리펙토링
 - 기존 VM 배포 -> AWS EC2 배포 (현재 개인적인 사유로 중단)
